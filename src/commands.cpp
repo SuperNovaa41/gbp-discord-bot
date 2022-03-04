@@ -12,6 +12,7 @@ std::string genericResponse();
 std::string helpMessage();
 std::string findNum(int pos);
 std::string findName(std::string user);
+std::string findGBP(int gbpinp);
 
 /**
  * ##commandParse
@@ -35,17 +36,14 @@ std::string commandParse(std::vector<std::string> args)
 	} else if (args[0] == "findpos" ) {
 		if (args.size() >= 2)
 			return findNum(std::stoi(args[1]));
-		else
-			return "Invalid command!";
 	} else if (args[0] == "findname") {
 		if (args.size() >= 2)
 			return findName(args[1]);
-		else
-			return "Invalid command!";
-		
-	} else {
-		return "Invalid command!";
-	}
+	} else if (args[0] == "findgbp") {
+		if (args.size() >= 2)
+			return findGBP(std::stoi(args[1]));
+	} 
+	return "Invalid command!";
 }
 
 #define FILE_NAME "temp-GBP"
@@ -96,6 +94,19 @@ std::string findName(std::string user)
 		} 	
 	}
 	return "User not found!";
+}
+
+std::string findGBP(int gbpinp)
+{
+	std::string out = "";
+	std::map<unsigned short int, std::pair<int, std::string>> gbp = readGBPIntoList();
+	for (std::map<unsigned short int, std::pair<int, std::string>>::iterator it = gbp.begin(); it != gbp.end(); it++)
+		if (it->second.first == gbpinp)
+			out += "#" + std::to_string(it->first) + ": " + it->second.second + " (" + std::to_string(it->second.first) + " GBP)\n";
+
+	if (out == "")
+		return "No users found with that GBP!";
+	return out;
 }
 
 /**
