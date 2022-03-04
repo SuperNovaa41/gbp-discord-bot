@@ -13,23 +13,25 @@ void fetchLatestGBP()
 	Py_Finalize();
 }
 
-std::map<int, std::string>readGBPIntoList()
+std::map<int, std::pair<int, std::string>>readGBPIntoList()
 {
-	std::map<int, std::string> GBP;
-
+	std::map<int, std::pair<int, std::string>> GBP;
 	std::ifstream file;
-	file.open("balances.txt");
+	file.open("../src/balances.txt");
 	std::string line;
+	int i = 1;
 	while(getline(file, line)) {
 		std::string username = line.substr(line.find(" "), line.rfind(" ") - line.find(" "));
 		int tGBP = std::stoi(line.substr(line.rfind(" "), line.length() - line.rfind(" ")));
 
-		GBP.insert({tGBP, username});
+		GBP.insert({i, {tGBP, username}});
+		i++;
 	}
+
 	return GBP;
 }
 
-std::map<int, std::string>fetchAndReadGBP()
+std::map<int, std::pair<int, std::string>>fetchAndReadGBP()
 {
 	fetchLatestGBP();
 	return readGBPIntoList();

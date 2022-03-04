@@ -1,18 +1,19 @@
 #include "gbp.cpp"
+#include <string>
 
 std::string printFullGBPList(bool update = false)
 {
-	std::map<int, std::string> gbp;
+	std::map<int, std::pair<int, std::string>> gbp;
 	if (update)
 		gbp = fetchAndReadGBP();
 	else
 		gbp = readGBPIntoList();
 
-	std::string msg;
-	int i = 1;
-	for (std::map<int, std::string>::iterator it = gbp.end(); it != gbp.begin(); it--) {
-		msg += "#[i] [it->second], GBP: [it->first]\n"; 
-		i++;
+	std::string msg = "";
+	for (std::map<int, std::pair<int, std::string>>::iterator it = gbp.begin(); it != gbp.end(); it++) {
+		msg += std::to_string(it->first) + ": " + it->second.second + "(" + std::to_string(it->second.first) + " GBP)\n";
+
 	}
 	return msg;
 }
+

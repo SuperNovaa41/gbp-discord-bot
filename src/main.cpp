@@ -1,3 +1,4 @@
+#include <cstddef>
 #include <dpp/appcommand.h>
 #include <dpp/dispatcher.h>
 #include <dpp/dpp.h>
@@ -6,8 +7,9 @@
 #include <dpp/once.h>
 #include <dpp/queues.h>
 #include <dpp/nlohmann/json.hpp>
+#include <bits/stdc++.h>
 #include <string>
-#include "commands.cpp" 
+#include "commands.cpp"
 
 using json = nlohmann::json;
 
@@ -40,13 +42,13 @@ void onMessage(dpp::cluster &bot, dpp::message msg)
 {
 	if (!hasCommand(msg))
 		return;
+	std::cout << "Command received!\n";
 
-	readGBPIntoList();
 
-	int argIdx = msg.content.find(" ");
+	int argIdx = msg.content.find(" ") + 1;
 	std::string argument = msg.content.substr(argIdx, msg.content.length() - argIdx);
 
-	std::string msgContent = "guh";
+	std::string msgContent = "";
 	if (argument == "gbp")
 		msgContent = printFullGBPList();
 
@@ -57,6 +59,7 @@ void onMessage(dpp::cluster &bot, dpp::message msg)
 
 int main()
 {	
+	
 	/* Setup the bot **/	
 	json config;
 	std::ifstream configFile("../config.json");
