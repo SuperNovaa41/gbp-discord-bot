@@ -1,6 +1,9 @@
 #include "gbp.cpp"
 #include <string>
 
+#define FILE_WARNING "/FILE/"
+
+#define FILE_NAME "temp-GBP"
 std::string printFullGBPList(bool update = false)
 {
 	std::map<int, std::pair<int, std::string>> gbp;
@@ -9,11 +12,21 @@ std::string printFullGBPList(bool update = false)
 	else
 		gbp = readGBPIntoList();
 
-	std::string msg = "";
+	std::ofstream file;
+	file.open("temp-GBP");
+	
+	std::string line;
 	for (std::map<int, std::pair<int, std::string>>::iterator it = gbp.begin(); it != gbp.end(); it++) {
-		msg += std::to_string(it->first) + ": " + it->second.second + "(" + std::to_string(it->second.first) + " GBP)\n";
+		line = std::to_string(it->first) + ": " + it->second.second + " (" + std::to_string(it->second.first) + " GBP)\n";
 
+		file << line;
 	}
-	return msg;
-}
+	file.close();
 
+	std::string out;
+	out.append(FILE_WARNING);
+	out.append(" ");
+	out.append(FILE_NAME);
+	return out;
+}
+#undef FILE_NAME

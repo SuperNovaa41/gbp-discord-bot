@@ -49,8 +49,9 @@ void onMessage(dpp::cluster &bot, dpp::message msg)
 	std::string argument = msg.content.substr(argIdx, msg.content.length() - argIdx);
 
 	std::string msgContent = "";
-	if (argument == "gbp")
-		msgContent = printFullGBPList();
+
+
+
 
 	dpp::message toSend = dpp::message(msg.channel_id, msgContent); 
 
