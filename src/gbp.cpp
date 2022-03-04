@@ -13,8 +13,8 @@ void fetchLatestGBP()
 	FILE* fp;
 
 	Py_Initialize();
-	fp = _Py_fopen("gbp-leaderboard.py", "r");
-	PyRun_SimpleFile(fp, "gbp-leaderboard.py");
+	fp = _Py_fopen("../src/gbp-leaderboard.py", "r");
+	PyRun_SimpleFile(fp, "../src/gbp-leaderboard.py");
 	Py_Finalize();
 }
 

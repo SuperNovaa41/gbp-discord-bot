@@ -1,11 +1,16 @@
 #include "gbp.cpp"
 #include <string>
+#include <unordered_map>
 #include <vector>
+#include <algorithm>
 
 #define FILE_WARNING "/FILE/"
+#define EMBED_WARNING "/EMBED/"
 
 std::string printFullGBPList(bool = false);
 std::string genericResponse();
+std::string helpMessage();
+std::string findNum(int pos);
 
 /**
  * ##commandParse
@@ -17,12 +22,24 @@ std::string genericResponse();
  */
 std::string commandParse(std::vector<std::string> args)
 {
-	if (args[0] == "gbplist")
-		return printFullGBPList(args[1] == "update" ? true : false);
-	else if (args[0] == "hi")
+	if (args[0] == "gbplist") {
+		if (args.size() >= 2)
+			return printFullGBPList(args[1] == "update" ? true : false);
+		else
+			return printFullGBPList();
+	} else if (args[0] == "hi") {
 		return genericResponse();
-	else
+	} else if (args[0] == "help") {
+		return helpMessage();
+	} else if (args[0] == "findpos" ) {
+		if (args.size() >= 2)
+			return findNum(std::stoi(args[1]));
+		else
+			return "Invalid command!";
+		
+	} else {
 		return "Invalid command!";
+	}
 }
 
 #define FILE_NAME "temp-GBP"
@@ -57,6 +74,13 @@ std::string printFullGBPList(bool update)
 }
 #undef FILE_NAME
 
+std::string findNum(int pos)
+{
+	std::map<unsigned short int, std::pair<int, std::string>> gbp = readGBPIntoList();
+	std::string out = "#" + std::to_string(pos) + ": " + gbp[pos].second + " (" + std::to_string(gbp[pos].first) + "GBP)\n"; 
+	return out;
+}
+
 /**
  * ##genericResponse
  *
@@ -65,4 +89,21 @@ std::string printFullGBPList(bool update)
 std::string genericResponse()
 {
 	return "Fuck you";
+}
+
+/** 
+ * ##helpMessage
+ *
+ * Return the list of commands.
+ */
+
+std::string helpMessage()
+{
+	std::string out;
+	out += "```\n";
+	out += "Available Commands: \n";
+	out += "gbplist (update):\n";
+	out += "----> Print out the current GBP leaderboard. Add update to fetch the latest page.\n";
+	out += "```\n";
+	return out;
 }

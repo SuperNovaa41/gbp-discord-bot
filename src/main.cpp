@@ -78,7 +78,6 @@ void onMessage(dpp::cluster &bot, dpp::message msg)
 	std::vector<std::string> messageArgs = separateArgs(msgContent);
 	dpp::message toSend;
 	if (messageArgs[0] == std::string(FILE_WARNING)) {
-		std::cout << "Handling file!\n";
 		toSend = dpp::message(msg.channel_id, "");
 		toSend.add_file("gbp-list.txt",  dpp::utility::read_file(messageArgs[1]));
 	} else {
