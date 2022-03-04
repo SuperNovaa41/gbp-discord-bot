@@ -28,6 +28,7 @@ CMakeFiles/gbp-bot.dir/src/main.cpp.o: ../libs/DPP/include/dpp/json_fwd.hpp
 CMakeFiles/gbp-bot.dir/src/main.cpp.o: ../libs/DPP/include/dpp/managed.h
 CMakeFiles/gbp-bot.dir/src/main.cpp.o: ../libs/DPP/include/dpp/message.h
 CMakeFiles/gbp-bot.dir/src/main.cpp.o: ../libs/DPP/include/dpp/misc-enum.h
+CMakeFiles/gbp-bot.dir/src/main.cpp.o: ../libs/DPP/include/dpp/nlohmann/json.hpp
 CMakeFiles/gbp-bot.dir/src/main.cpp.o: ../libs/DPP/include/dpp/once.h
 CMakeFiles/gbp-bot.dir/src/main.cpp.o: ../libs/DPP/include/dpp/presence.h
 CMakeFiles/gbp-bot.dir/src/main.cpp.o: ../libs/DPP/include/dpp/prune.h

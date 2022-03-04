@@ -29,6 +29,7 @@ CMakeFiles/gbp-bot.dir/src/main.cpp.o
  ../libs/DPP/include/dpp/managed.h
  ../libs/DPP/include/dpp/message.h
  ../libs/DPP/include/dpp/misc-enum.h
+ ../libs/DPP/include/dpp/nlohmann/json.hpp
  ../libs/DPP/include/dpp/once.h
  ../libs/DPP/include/dpp/presence.h
  ../libs/DPP/include/dpp/prune.h
