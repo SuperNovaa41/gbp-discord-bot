@@ -1,10 +1,25 @@
 #include "gbp.cpp"
 #include <string>
+#include <vector>
 
 #define FILE_WARNING "/FILE/"
 
+std::string printFullGBPList(bool = false);
+std::string genericResponse();
+
+std::string commandParse(std::vector<std::string> args)
+{
+	if (args[0] == "gbplist")
+		return printFullGBPList();
+	else if (args[0] == "hi")
+		return genericResponse();
+	else
+		return "Invalid command!";
+}
+
+
 #define FILE_NAME "temp-GBP"
-std::string printFullGBPList(bool update = false)
+std::string printFullGBPList(bool update)
 {
 	std::map<int, std::pair<int, std::string>> gbp;
 	if (update)
@@ -23,10 +38,12 @@ std::string printFullGBPList(bool update = false)
 	}
 	file.close();
 
-	std::string out;
-	out.append(FILE_WARNING);
-	out.append(" ");
-	out.append(FILE_NAME);
+	std::string out = std::string(FILE_WARNING) + " " + std::string(FILE_NAME);
 	return out;
 }
 #undef FILE_NAME
+
+std::string genericResponse()
+{
+	return "Fuck you";
+}
