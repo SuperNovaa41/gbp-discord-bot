@@ -5,16 +5,11 @@
 #include <dpp/message.h>
 #include <dpp/once.h>
 #include <dpp/queues.h>
+#include <dpp/nlohmann/json.hpp>
 #include <string>
 #include "gbp.h"
 
-
-//TODO: put these into a gitignored text file :))))))))
-const std::string BOT_TOKEN = "OTQ5MTIxNDU2MTY2NTM5Mjk2.YiFwPA.Hrj5LxqQuApFZfNuSUBVXe3kYEQ";
-const std::string BOT_COMMAND = "!gbp";
-
-
-const dpp::snowflake GUILD_ID = 865347537287249980; 
+using json = nlohmann::json;
 
 /**
  * ##hasCommand
@@ -26,7 +21,10 @@ const dpp::snowflake GUILD_ID = 865347537287249980;
  */
 bool hasCommand(dpp::message msg)
 {
-	return msg.content.substr(0, (msg.content.find(" "))) == BOT_COMMAND;
+	json config;
+	std::ifstream configFile("../config.json");
+	configFile >> config;
+	return msg.content.substr(0, (msg.content.find(" "))) == config["bot_command"];
 }
 
 /**
@@ -51,10 +49,16 @@ void onMessage(dpp::cluster &bot, dpp::message msg)
 }
 
 int main()
-{
-	//Setup bot 
-	dpp::cluster bot(BOT_TOKEN, dpp::i_default_intents | dpp::i_message_content);
+{	
+	/* Setup the bot **/	
+	json config;
+	std::ifstream configFile("../config.json");
+	configFile >> config;
 
+	std::string token = config["token"];
+	dpp::cluster bot(token, dpp::i_default_intents | dpp::i_message_content);
+
+	/* Start listening to commands */
 	bot.on_log(dpp::utility::cout_logger());
 
 	bot.on_message_create([&](const dpp::message_create_t &event) {
