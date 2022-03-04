@@ -78,33 +78,57 @@ std::string printFullGBPList(bool update)
 }
 #undef FILE_NAME
 
+/**
+ * ##findNum
+ *
+ * Returns the user + GBP at the given position.
+ *
+ * Arguments:
+ * * int pos - The position to find.
+ */
 std::string findNum(int pos)
 {
 	std::map<unsigned short int, std::pair<int, std::string>> gbp = readGBPIntoList();
-	std::string out = "#" + std::to_string(pos) + ": " + gbp[pos].second + " (" + std::to_string(gbp[pos].first) + " GBP)\n"; 
+	std::string out = "```#" + std::to_string(pos) + ": " + gbp[pos].second + " (" + std::to_string(gbp[pos].first) + " GBP)```\n"; 
 	return out;
 }
 
+/**
+ * ##findName
+ *
+ * Finds the given user, and returns a string with their GBP.
+ *
+ * Arguments:
+ * * std::string user - The username to search for.
+ */
 std::string findName(std::string user)
 {
 	std::map<unsigned short int, std::pair<int, std::string>> gbp = readGBPIntoList();
 	for (std::map<unsigned short int, std::pair<int, std::string>>::iterator it = gbp.begin(); it != gbp.end(); it++) {
 		if (it->second.second.find(user) != -1) {
-			return "#" + std::to_string(it->first) + ": " + it->second.second + " (" + std::to_string(it->second.first) + " GBP)\n";
+			return "```#" + std::to_string(it->first) + ": " + it->second.second + " (" + std::to_string(it->second.first) + " GBP)```\n";
 		} 	
 	}
 	return "User not found!";
 }
 
+/**
+ * ##findGBP
+ *
+ * Returns a string containing every user with the given gbp.
+ *
+ * Arguments:
+ * * int gbpinp - The GBP to find.
+ */
 std::string findGBP(int gbpinp)
 {
-	std::string out = "";
+	std::string out = "```";
 	std::map<unsigned short int, std::pair<int, std::string>> gbp = readGBPIntoList();
 	for (std::map<unsigned short int, std::pair<int, std::string>>::iterator it = gbp.begin(); it != gbp.end(); it++)
 		if (it->second.first == gbpinp)
 			out += "#" + std::to_string(it->first) + ": " + it->second.second + " (" + std::to_string(it->second.first) + " GBP)\n";
-
-	if (out == "")
+	out += "```";
+	if (out == "``````")
 		return "No users found with that GBP!";
 	return out;
 }
@@ -124,7 +148,6 @@ std::string genericResponse()
  *
  * Return the list of commands.
  */
-
 std::string helpMessage()
 {
 	std::string out;
@@ -132,6 +155,12 @@ std::string helpMessage()
 	out += "Available Commands: \n";
 	out += "gbplist (update):\n";
 	out += "----> Print out the current GBP leaderboard. Add update to fetch the latest page.\n";
+	out += "findpos (number):\n";
+	out += "----> Prints out the user at number (number) in the GBP leaderboard.\n";
+	out += "findgbp (number):\n";
+	out += "----> Prints out every use with (number) GBP.\n";
+	out += "findname (username):\n";
+	out += "----> Prints out the user (username) and their GBP.\n";
 	out += "```\n";
 	return out;
 }
