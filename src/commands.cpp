@@ -13,6 +13,7 @@ std::string helpMessage();
 std::string findNum(int pos);
 std::string findName(std::string user);
 std::string findGBP(int gbpinp);
+std::string korolCopypasta(std::string username);
 
 /**
  * ##commandParse
@@ -45,6 +46,9 @@ std::string commandParse(std::vector<std::string> args)
 	} else if (args[0] == "fetchgbp") {
 		fetchLatestGBP();
 		return "Fetched latest GBP!";
+	} else if (args[0] == "korol") {
+		if (args.size() >= 2)
+			return korolCopypasta(args[1]);
 	}
 	return "Invalid command!";
 }
@@ -171,4 +175,9 @@ std::string helpMessage()
 	out += "----> Prints out the user (username) and their GBP.\n";
 	out += "```\n";
 	return out;
+}
+
+std::string korolCopypasta(std::string username)
+{
+	return username + " is well known for murderboning, valid hunting, and power gaming. I especially see them during my timeslot where I am often one of only two or three admins, the EST mornings. During this, regardless of whether or not I'm playing or adminning, I will see " + username + " at the core of the conflict. If they're an antag, then a lot of people are dying/dead. If not, then they are usually one of the biggest threats to the antagonists. It was to absolutely no one's surprise when " + username + " killed virtually everyone during their round in question following the tradition of another killing spree, while only talking to complain about something or to vent their minor irritation in deadchat between revivals as a changeling. This was at both the station and the evac shuttle.";
 }
