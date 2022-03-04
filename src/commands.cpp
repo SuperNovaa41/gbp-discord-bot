@@ -33,16 +33,19 @@ std::string commandParse(std::vector<std::string> args)
 		return genericResponse();
 	} else if (args[0] == "help") {
 		return helpMessage();
-	} else if (args[0] == "findpos" ) {
+	} else if (args[0] == "findpos") {
 		if (args.size() >= 2)
 			return findNum(std::stoi(args[1]));
 	} else if (args[0] == "findname") {
 		if (args.size() >= 2)
 			return findName(args[1]);
-	} else if (args[0] == "findgbp") {
+	} else if (args[0] == "findgbp") { 
 		if (args.size() >= 2)
 			return findGBP(std::stoi(args[1]));
-	} 
+	} else if (args[0] == "fetchgbp") {
+		fetchLatestGBP();
+		return "Fetched latest GBP!";
+	}
 	return "Invalid command!";
 }
 
@@ -103,13 +106,18 @@ std::string findNum(int pos)
  */
 std::string findName(std::string user)
 {
+	std::string out = "```";
 	std::map<unsigned short int, std::pair<int, std::string>> gbp = readGBPIntoList();
 	for (std::map<unsigned short int, std::pair<int, std::string>>::iterator it = gbp.begin(); it != gbp.end(); it++) {
 		if (it->second.second.find(user) != -1) {
-			return "```#" + std::to_string(it->first) + ": " + it->second.second + " (" + std::to_string(it->second.first) + " GBP)```\n";
+			out += "#" + std::to_string(it->first) + ": " + it->second.second + " (" + std::to_string(it->second.first) + " GBP)\n";
 		} 	
 	}
-	return "User not found!";
+	out += "```";
+
+	if (out == "``````")
+		return "User not found!";
+	return out;
 }
 
 /**
