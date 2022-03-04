@@ -14,6 +14,7 @@ std::string findNum(int pos);
 std::string findName(std::string user);
 std::string findGBP(int gbpinp);
 std::string korolCopypasta(std::string username);
+std::string mothblocksCopypasta();
 
 /**
  * ##commandParse
@@ -49,6 +50,8 @@ std::string commandParse(std::vector<std::string> args)
 	} else if (args[0] == "korol") {
 		if (args.size() >= 2)
 			return korolCopypasta(args[1]);
+	} else if (args[0] == "mothblocks") {
+		return mothblocksCopypasta();
 	}
 	return "Invalid command!";
 }
@@ -170,7 +173,7 @@ std::string helpMessage()
 	out += "findpos (number):\n";
 	out += "----> Prints out the user at number (number) in the GBP leaderboard.\n";
 	out += "findgbp (number):\n";
-	out += "----> Prints out every use with (number) GBP.\n";
+	out += "----> Prints out every user with (number) GBP.\n";
 	out += "findname (username):\n";
 	out += "----> Prints out the user (username) and their GBP.\n";
 	out += "```\n";
@@ -180,4 +183,17 @@ std::string helpMessage()
 std::string korolCopypasta(std::string username)
 {
 	return username + " is well known for murderboning, valid hunting, and power gaming. I especially see them during my timeslot where I am often one of only two or three admins, the EST mornings. During this, regardless of whether or not I'm playing or adminning, I will see " + username + " at the core of the conflict. If they're an antag, then a lot of people are dying/dead. If not, then they are usually one of the biggest threats to the antagonists. It was to absolutely no one's surprise when " + username + " killed virtually everyone during their round in question following the tradition of another killing spree, while only talking to complain about something or to vent their minor irritation in deadchat between revivals as a changeling. This was at both the station and the evac shuttle.";
+}
+
+std::string mothblocksCopypasta() 
+{
+	std::string out = "\
+		His blant disregard for normal tg servers.\n\
+		1) He consistently tells new admin candidates not to play, so how will they know more about a current playerbase if their only interaction is hovering around as a ghost. Why do you think nanites died as they did.\n\
+		2)his use of back channels to ensure that notes stick the way that they do, if someone disagree and proves that they are correct in a way. Tough shit, he already communicated with headmins about it before they even communicated to the player.\n\
+		Aka no reason for headmin ruling.\n\
+		3) MSO and server specific playerbases say one thing and they guy with his metagroup still force \"mrp\" policies and code that conflict.\n\
+		4)consistently banning Europeans out of discord code channel for bitching about it.\n\
+		5)saying that \"playerbase has to make their responsibility of knowing the pipeline changes for github.\" Which I, myself couldn't get a simple poll to see how players actually take the time to look at forums or github. (We both know its real low on that bell curve.)";
+	return out;
 }
