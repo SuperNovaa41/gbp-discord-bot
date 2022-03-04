@@ -44,21 +44,6 @@ bool hasCommand(dpp::message msg)
 	return msg.content.substr(0, (msg.content.find(" "))) == config["bot_command"];
 }
 
-dpp::message setMessage(unsigned int channel_id, std::string content)
-{
-	std::vector<std::string> messageArgs = separate_args(content);
-	if (messageArgs[0] == std::string(FILE_WARNING)) {
-		dpp::message msg = dpp::message(channel_id, "");
-		msg.add_file("gbp-list.txt",  dpp::utility::read_file(content.substr(content.find(" ") + 1, content.length() - (content.find(" ") + 1))));
-		return msg;
-	} else {
-		dpp::message msg = dpp::message(channel_id, content);
-		return msg;
-	}
-}
-
-
-
 /**
  * ##onMessage
  *
@@ -78,9 +63,16 @@ void onMessage(dpp::cluster &bot, dpp::message msg)
 
 	std::vector<std::string> args = separate_args(argument);
 	std::string msgContent = commandParse(args);
-	std::cout << msgContent << std::endl;
 
-	dpp::message toSend = setMessage(msg.channel_id, msgContent);
+	std::vector<std::string> messageArgs = separate_args(msgContent);
+	dpp::message toSend;
+	if (messageArgs[0] == std::string(FILE_WARNING)) {
+		std::cout << "Handling file!\n";
+		toSend = dpp::message(msg.channel_id, "");
+		toSend.add_file("gbp-list.txt",  dpp::utility::read_file(msgContent.substr(msgContent.find(" ") + 1, msgContent.length() - (msgContent.find(" ") + 1))));
+	} else {
+		toSend = dpp::message(msg.channel_id, msgContent);
+	}
 
 	bot.message_create(toSend);
 }
