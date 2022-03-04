@@ -11,6 +11,7 @@ std::string printFullGBPList(bool = false);
 std::string genericResponse();
 std::string helpMessage();
 std::string findNum(int pos);
+std::string findName(std::string user);
 
 /**
  * ##commandParse
@@ -34,6 +35,12 @@ std::string commandParse(std::vector<std::string> args)
 	} else if (args[0] == "findpos" ) {
 		if (args.size() >= 2)
 			return findNum(std::stoi(args[1]));
+		else
+			return "Invalid command!";
+		
+	} else if (args[0] == "findname") {
+		if (args.size() >= 2)
+			return findName(args[1]);
 		else
 			return "Invalid command!";
 		
@@ -77,8 +84,18 @@ std::string printFullGBPList(bool update)
 std::string findNum(int pos)
 {
 	std::map<unsigned short int, std::pair<int, std::string>> gbp = readGBPIntoList();
-	std::string out = "#" + std::to_string(pos) + ": " + gbp[pos].second + " (" + std::to_string(gbp[pos].first) + "GBP)\n"; 
+	std::string out = "#" + std::to_string(pos) + ": " + gbp[pos].second + " (" + std::to_string(gbp[pos].first) + " GBP)\n"; 
 	return out;
+}
+
+std::string findName(std::string user)
+{
+	std::map<unsigned short int, std::pair<int, std::string>> gbp = readGBPIntoList();
+	for (std::map<unsigned short int, std::pair<int, std::string>>::iterator it = gbp.begin(); it != gbp.end(); it++) {
+		if (it->second.second == user) 
+			return "#" + std::to_string(it->first) + ": " + it->second.second + " (" + std::to_string(it->second.first) + " GBP)\n";
+	}
+	return "User not found!";
 }
 
 /**
