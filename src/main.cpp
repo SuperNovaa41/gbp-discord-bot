@@ -7,7 +7,7 @@
 #include <dpp/queues.h>
 #include <dpp/nlohmann/json.hpp>
 #include <string>
-#include "gbp.h"
+#include "commands.cpp" 
 
 using json = nlohmann::json;
 
@@ -41,9 +41,16 @@ void onMessage(dpp::cluster &bot, dpp::message msg)
 	if (!hasCommand(msg))
 		return;
 
+	readGBPIntoList();
+
 	int argIdx = msg.content.find(" ");
 	std::string argument = msg.content.substr(argIdx, msg.content.length() - argIdx);
-	dpp::message toSend = dpp::message(msg.channel_id, argument); 
+
+	std::string msgContent = "guh";
+	if (argument == "gbp")
+		msgContent = printFullGBPList();
+
+	dpp::message toSend = dpp::message(msg.channel_id, msgContent); 
 
 	bot.message_create(toSend);
 }

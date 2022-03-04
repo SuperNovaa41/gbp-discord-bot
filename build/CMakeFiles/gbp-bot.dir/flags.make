@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/seth/documents/programming/discord-bots/gbp/libs/DPP/include
+CXX_INCLUDES = -I/home/seth/documents/programming/discord-bots/gbp/libs/DPP/include -isystem /usr/include/python3.9
 
 CXX_FLAGS = -std=gnu++17
 

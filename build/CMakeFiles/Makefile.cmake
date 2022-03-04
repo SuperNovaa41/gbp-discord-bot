@@ -42,6 +42,8 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/usr/share/cmake-3.18/Modules/FindPackageHandleStandardArgs.cmake"
   "/usr/share/cmake-3.18/Modules/FindPackageMessage.cmake"
   "/usr/share/cmake-3.18/Modules/FindPkgConfig.cmake"
+  "/usr/share/cmake-3.18/Modules/FindPython/Support.cmake"
+  "/usr/share/cmake-3.18/Modules/FindPython3.cmake"
   "/usr/share/cmake-3.18/Modules/FindThreads.cmake"
   "/usr/share/cmake-3.18/Modules/FindZLIB.cmake"
   "/usr/share/cmake-3.18/Modules/GNUInstallDirs.cmake"

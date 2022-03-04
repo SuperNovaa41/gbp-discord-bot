@@ -571,6 +571,8 @@ CPACK_SOURCE_ZIP-ADVANCED:INTERNAL=1
 FIND_PACKAGE_MESSAGE_DETAILS_OpenSSL:INTERNAL=[/usr/lib/x86_64-linux-gnu/libcrypto.so][/usr/include][c ][v1.1.1k()]
 //Details about finding Opus
 FIND_PACKAGE_MESSAGE_DETAILS_Opus:INTERNAL=[/usr/include][/usr/lib/x86_64-linux-gnu/libopus.so;/usr/lib/x86_64-linux-gnu/libm.so][1][v()]
+//Details about finding Python3
+FIND_PACKAGE_MESSAGE_DETAILS_Python3:INTERNAL=[/usr/bin/python3.9][/usr/include/python3.9][/usr/lib/x86_64-linux-gnu/libpython3.9.so][cfound components: Interpreter Development Development.Module Development.Embed ][v3.9.2()]
 //Details about finding Threads
 FIND_PACKAGE_MESSAGE_DETAILS_Threads:INTERNAL=[TRUE][v()]
 //Details about finding ZLIB
@@ -636,6 +638,17 @@ _OPENSSL_openssl_INCLUDEDIR:INTERNAL=
 _OPENSSL_openssl_LIBDIR:INTERNAL=
 _OPENSSL_openssl_PREFIX:INTERNAL=
 _OPENSSL_openssl_VERSION:INTERNAL=
+_Python3_DEVELOPMENT_EMBED_SIGNATURE:INTERNAL=eb570793687ff1cfcb35fdf811570585
+_Python3_DEVELOPMENT_MODULE_SIGNATURE:INTERNAL=cd1014fa434c9f908cf41b54cd547222
+//Path to a program.
+_Python3_EXECUTABLE:INTERNAL=/usr/bin/python3.9
+//Path to a file.
+_Python3_INCLUDE_DIR:INTERNAL=/usr/include/python3.9
+//Python3 Properties
+_Python3_INTERPRETER_PROPERTIES:INTERNAL=Python;3;9;2;64;;cpython-39-x86_64-linux-gnu;/usr/lib/python3.9;/usr/lib/python3.9;/usr/lib/python3/dist-packages;/usr/lib/python3/dist-packages
+_Python3_INTERPRETER_SIGNATURE:INTERNAL=4c68ce0cc4d267693d7c5b1e646e8b91
+//Path to a library.
+_Python3_LIBRARY_RELEASE:INTERNAL=/usr/lib/x86_64-linux-gnu/libpython3.9.so
 __pkg_config_arguments__OPENSSL:INTERNAL=QUIET;openssl
 __pkg_config_arguments_sodium_PKG:INTERNAL=QUIET;libsodium
 __pkg_config_checked__OPENSSL:INTERNAL=1
