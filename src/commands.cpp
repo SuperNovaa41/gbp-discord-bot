@@ -37,7 +37,6 @@ std::string commandParse(std::vector<std::string> args)
 			return findNum(std::stoi(args[1]));
 		else
 			return "Invalid command!";
-		
 	} else if (args[0] == "findname") {
 		if (args.size() >= 2)
 			return findName(args[1]);
@@ -92,8 +91,9 @@ std::string findName(std::string user)
 {
 	std::map<unsigned short int, std::pair<int, std::string>> gbp = readGBPIntoList();
 	for (std::map<unsigned short int, std::pair<int, std::string>>::iterator it = gbp.begin(); it != gbp.end(); it++) {
-		if (it->second.second == user) 
+		if (it->second.second.find(user) != -1) {
 			return "#" + std::to_string(it->first) + ": " + it->second.second + " (" + std::to_string(it->second.first) + " GBP)\n";
+		} 	
 	}
 	return "User not found!";
 }
