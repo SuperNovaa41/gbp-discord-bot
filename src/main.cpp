@@ -13,7 +13,16 @@
 
 using json = nlohmann::json;
 
-std::vector<std::string> separate_args(std::string args)
+/**
+ * ##separateArgs
+ *
+ * Returns a vector of each word in the given input, split by " "
+ * 
+ * Arguments:
+ * * std::string args - The string to split up
+ */
+
+std::vector<std::string> separateArgs(std::string args)
 {
 	std::vector<std::string> out;
 	while (1) {
@@ -61,19 +70,22 @@ void onMessage(dpp::cluster &bot, dpp::message msg)
 	int argIdx = msg.content.find(" ") + 1;
 	std::string argument = msg.content.substr(argIdx, msg.content.length() - argIdx);
 
-	std::vector<std::string> args = separate_args(argument);
+	/* Parse the command */
+	std::vector<std::string> args = separateArgs(argument);
 	std::string msgContent = commandParse(args);
 
-	std::vector<std::string> messageArgs = separate_args(msgContent);
+	/* Here we check if we should embed a file, or just send a message */
+	std::vector<std::string> messageArgs = separateArgs(msgContent);
 	dpp::message toSend;
 	if (messageArgs[0] == std::string(FILE_WARNING)) {
 		std::cout << "Handling file!\n";
 		toSend = dpp::message(msg.channel_id, "");
-		toSend.add_file("gbp-list.txt",  dpp::utility::read_file(msgContent.substr(msgContent.find(" ") + 1, msgContent.length() - (msgContent.find(" ") + 1))));
+		toSend.add_file("gbp-list.txt",  dpp::utility::read_file(messageArgs[1]));
 	} else {
 		toSend = dpp::message(msg.channel_id, msgContent);
 	}
-
+	
+	/* Send the message */
 	bot.message_create(toSend);
 }
 

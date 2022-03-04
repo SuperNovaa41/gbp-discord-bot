@@ -3,6 +3,11 @@
 #include <bits/stdc++.h>
 #include <Python.h>
 
+/**
+ * ##fetchLatestGBP
+ *
+ * Uses the python script located in /src/ to fetch the latest GBP and write it to a file
+ */
 void fetchLatestGBP()
 {
 	FILE* fp;
@@ -13,9 +18,15 @@ void fetchLatestGBP()
 	Py_Finalize();
 }
 
-std::map<int, std::pair<int, std::string>>readGBPIntoList()
+/**
+ * ##readGBPIntoList
+ *
+ * Returns a map of containing the contents of the GBP file.
+ * Formatted as <position (unsigned short int), <gbp amount (int), username (std::string)>>
+ */
+std::map<unsigned short int, std::pair<int, std::string>>readGBPIntoList()
 {
-	std::map<int, std::pair<int, std::string>> GBP;
+	std::map<unsigned short int, std::pair<int, std::string>> GBP;
 	std::ifstream file;
 	file.open("../src/balances.txt");
 	std::string line;
@@ -27,11 +38,15 @@ std::map<int, std::pair<int, std::string>>readGBPIntoList()
 		GBP.insert({i, {tGBP, username}});
 		i++;
 	}
+	file.close();
 
 	return GBP;
 }
 
-std::map<int, std::pair<int, std::string>>fetchAndReadGBP()
+/**
+ * fetches latest GBP, and then reads it into a map
+ */
+std::map<unsigned short int, std::pair<int, std::string>>fetchAndReadGBP()
 {
 	fetchLatestGBP();
 	return readGBPIntoList();
