@@ -101,6 +101,7 @@ int main()
 
 	/* Start listening to commands */
 	bot.on_log(dpp::utility::cout_logger());
+	initCommands();
 
 	bot.on_message_create([&](const dpp::message_create_t &event) {
 		if (event.msg.author.id != bot.me.id) // don't respond to own messages

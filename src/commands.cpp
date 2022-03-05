@@ -7,14 +7,41 @@
 #define FILE_WARNING "/FILE/"
 #define EMBED_WARNING "/EMBED/"
 
-std::string printFullGBPList(bool = false);
+std::string fetchGBP();
+std::string printFullGBPList();
 std::string genericResponse();
 std::string helpMessage();
-std::string findNum(int pos);
-std::string findName(std::string user);
-std::string findGBP(int gbpinp);
-std::string korolCopypasta(std::string username);
-std::string mothblocksCopypasta();
+
+std::string copypasta(std::string, std::string);
+std::string findName(std::string);
+
+std::string findGBP(int);
+std::string findNum(int);
+
+typedef std::string (*vFunc)(void);
+typedef std::string (*iFunc)(int);
+typedef std::string (*sFunc)(std::string);
+typedef std::string (*ssFunc)(std::string, std::string);
+
+std::map<std::string, vFunc>noArgs;
+std::map<std::string, iFunc>intArgs;
+std::map<std::string, sFunc>stringArgs;
+std::map<std::string, ssFunc>twoStringArgs;
+
+void initCommands()
+{
+	noArgs.emplace("hi", &genericResponse);
+	noArgs.emplace("help", &helpMessage);
+	noArgs.emplace("gbplist", &printFullGBPList);
+	noArgs.emplace("fetchgbp", &fetchGBP);
+
+	intArgs.emplace("findpos", &findNum);
+	intArgs.emplace("findgbp", &findGBP);
+
+	stringArgs.emplace("findname", &findName);
+
+	twoStringArgs.emplace("copypasta", &copypasta);
+}
 
 /**
  * ##commandParse
@@ -26,32 +53,26 @@ std::string mothblocksCopypasta();
  */
 std::string commandParse(std::vector<std::string> args)
 {
-	if (args[0] == "gbplist") {
+	auto i1 = noArgs.find(args[0]);
+	if (i1 != noArgs.end()) {
+		return (*i1->second)();
+	}
+	auto i2 = intArgs.find(args[0]);
+	if (i2 != intArgs.end()) {
 		if (args.size() >= 2)
-			return printFullGBPList(args[1] == "update" ? true : false);
-		else
-			return printFullGBPList();
-	} else if (args[0] == "hi") {
-		return genericResponse();
-	} else if (args[0] == "help") {
-		return helpMessage();
-	} else if (args[0] == "findpos") {
+			return (*i2->second)(std::stoi(args[1]));
+	}
+	auto i3 = stringArgs.find(args[0]);
+	if (i3 != stringArgs.end()) {
 		if (args.size() >= 2)
-			return findNum(std::stoi(args[1]));
-	} else if (args[0] == "findname") {
-		if (args.size() >= 2)
-			return findName(args[1]);
-	} else if (args[0] == "findgbp") { 
-		if (args.size() >= 2)
-			return findGBP(std::stoi(args[1]));
-	} else if (args[0] == "fetchgbp") {
-		fetchLatestGBP();
-		return "Fetched latest GBP!";
-	} else if (args[0] == "korol") {
-		if (args.size() >= 2)
-			return korolCopypasta(args[1]);
-	} else if (args[0] == "mothblocks") {
-		return mothblocksCopypasta();
+			return (*i3->second)(args[1]);
+	}
+	auto i4 = twoStringArgs.find(args[0]);
+	if (i4 != twoStringArgs.end()) {
+		if (args.size() == 2)
+			return (*i4->second)(args[1], "");
+		else if (args.size() >= 3)
+			return (*i4->second)(args[1], args[2]);
 	}
 	return "Invalid command!";
 }
@@ -65,13 +86,10 @@ std::string commandParse(std::vector<std::string> args)
  * Arguments:
  * * bool update - Should we fetch the latest GBP?
  */
-std::string printFullGBPList(bool update)
+std::string printFullGBPList()
 {
 	std::map<unsigned short int, std::pair<int, std::string>> gbp;
-	if (update)
-		gbp = fetchAndReadGBP();
-	else
-		gbp = readGBPIntoList();
+	gbp = readGBPIntoList();
 
 	std::ofstream file;
 	file.open("temp-GBP");
@@ -127,6 +145,12 @@ std::string findName(std::string user)
 	return out;
 }
 
+std::string fetchGBP()
+{
+	fetchLatestGBP();
+	return "Fetched latest GBP!";
+}
+
 /**
  * ##findGBP
  *
@@ -180,14 +204,14 @@ std::string helpMessage()
 	return out;
 }
 
-std::string korolCopypasta(std::string username)
+std::string copypasta(std::string msg, std::string username)
 {
-	return username + " is well known for murderboning, valid hunting, and power gaming. I especially see them during my timeslot where I am often one of only two or three admins, the EST mornings. During this, regardless of whether or not I'm playing or adminning, I will see " + username + " at the core of the conflict. If they're an antag, then a lot of people are dying/dead. If not, then they are usually one of the biggest threats to the antagonists. It was to absolutely no one's surprise when " + username + " killed virtually everyone during their round in question following the tradition of another killing spree, while only talking to complain about something or to vent their minor irritation in deadchat between revivals as a changeling. This was at both the station and the evac shuttle.";
-}
+	std::string out;
 
-std::string mothblocksCopypasta() 
-{
-	std::string out = "\
+	if (msg == "korol") {
+		out = username + " is well known for murderboning, valid hunting, and power gaming. I especially see them during my timeslot where I am often one of only two or three admins, the EST mornings. During this, regardless of whether or not I'm playing or adminning, I will see " + username + " at the core of the conflict. If they're an antag, then a lot of people are dying/dead. If not, then they are usually one of the biggest threats to the antagonists. It was to absolutely no one's surprise when " + username + " killed virtually everyone during their round in question following the tradition of another killing spree, while only talking to complain about something or to vent their minor irritation in deadchat between revivals as a changeling. This was at both the station and the evac shuttle.";
+	} else if (msg == "mothblocks") {
+		out = "\
 		His blant disregard for normal tg servers.\n\
 		1) He consistently tells new admin candidates not to play, so how will they know more about a current playerbase if their only interaction is hovering around as a ghost. Why do you think nanites died as they did.\n\
 		2)his use of back channels to ensure that notes stick the way that they do, if someone disagree and proves that they are correct in a way. Tough shit, he already communicated with headmins about it before they even communicated to the player.\n\
@@ -195,5 +219,8 @@ std::string mothblocksCopypasta()
 		3) MSO and server specific playerbases say one thing and they guy with his metagroup still force \"mrp\" policies and code that conflict.\n\
 		4)consistently banning Europeans out of discord code channel for bitching about it.\n\
 		5)saying that \"playerbase has to make their responsibility of knowing the pipeline changes for github.\" Which I, myself couldn't get a simple poll to see how players actually take the time to look at forums or github. (We both know its real low on that bell curve.)";
+	}
+
+
 	return out;
 }
