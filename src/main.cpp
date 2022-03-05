@@ -13,6 +13,8 @@
 
 using json = nlohmann::json;
 
+#define BOT_COMMAND "!gbp"
+
 /**
  * ##separateArgs
  *
@@ -29,10 +31,9 @@ std::vector<std::string> separateArgs(std::string args)
 		if (args.find(" ") == -1) {
 			out.push_back(args);
 			break;
-		} else {
-			out.push_back(args.substr(0, args.find(" ")));
-			args = args.substr(args.find(" ") + 1, args.length() - (args.find(" ") + 1));
 		}
+		out.push_back(args.substr(0, args.find(" ")));
+		args = args.substr(args.find(" ") + 1, args.length() - (args.find(" ") + 1));
 	}
 	return out;
 }
@@ -47,10 +48,7 @@ std::vector<std::string> separateArgs(std::string args)
  */
 bool hasCommand(dpp::message msg)
 {
-	json config;
-	std::ifstream configFile("../config.json");
-	configFile >> config;
-	return msg.content.substr(0, (msg.content.find(" "))) == config["bot_command"];
+	return msg.content.substr(0, (msg.content.find(" "))) == std::string(BOT_COMMAND);
 }
 
 /**
@@ -79,10 +77,9 @@ void onMessage(dpp::cluster &bot, dpp::message msg)
 	dpp::message toSend;
 	if (messageArgs[0] == std::string(FILE_WARNING)) {
 		toSend = dpp::message(msg.channel_id, "");
-		toSend.add_file("gbp-list.txt",  dpp::utility::read_file(messageArgs[1]));
-	} else {
+		toSend.add_file(messageArgs[2],  dpp::utility::read_file(messageArgs[1]));
+	} else 
 		toSend = dpp::message(msg.channel_id, msgContent);
-	}
 	
 	/* Send the message */
 	bot.message_create(toSend);
@@ -95,7 +92,6 @@ int main()
 	json config;
 	std::ifstream configFile("../config.json");
 	configFile >> config;
-
 	std::string token = config["token"];
 	dpp::cluster bot(token, dpp::i_default_intents | dpp::i_message_content);
 

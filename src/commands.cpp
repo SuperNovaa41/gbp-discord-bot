@@ -5,7 +5,6 @@
 #include <algorithm>
 
 #define FILE_WARNING "/FILE/"
-#define EMBED_WARNING "/EMBED/"
 
 typedef std::string (*vFunc)(void);
 typedef std::string (*vecFunc)(std::vector<std::string>);
@@ -32,7 +31,20 @@ std::string commandParse(std::vector<std::string> args)
 	return "Invalid command!";
 }
 
-#define FILE_NAME "temp-GBP"
+std::string sendFile(std::string filePath, std::string fileName = "")
+{
+	if (fileName == "")
+		fileName = filePath;
+	/*
+	 * Files are sent with:
+	 * FILE_WARNING $PATH $FILENAME 
+	 *
+	 * $FILENAME is the name of the file that will be sent to discord, if you don't want the file sent
+	 * to have the save name as the one on disk, or if you have a custom path for the file, set $FILENAME
+	 */
+	return std::string(FILE_WARNING) + " " + filePath + " " + fileName;
+}
+
 /**
  * printFullGBPList
  *
@@ -53,10 +65,8 @@ std::string printFullGBPList()
 	}
 	file.close();
 
-	std::string out = std::string(FILE_WARNING) + " " + std::string(FILE_NAME);
-	return out;
+	return sendFile("temp-GBP", "gbp-list.txt");
 }
-#undef FILE_NAME
 
 /**
  * ##fetchGBP
