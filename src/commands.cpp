@@ -28,6 +28,7 @@ std::map<std::string, iFunc>intArgs;
 std::map<std::string, sFunc>stringArgs;
 std::map<std::string, ssFunc>twoStringArgs;
 
+/* Initializes all the commands */
 void initCommands()
 {
 	noArgs.emplace("hi", &genericResponse);
@@ -82,9 +83,6 @@ std::string commandParse(std::vector<std::string> args)
  * printFullGBPList
  *
  * Returns a path to a file that contains a formatted list of gbp values
- *
- * Arguments:
- * * bool update - Should we fetch the latest GBP?
  */
 std::string printFullGBPList()
 {
@@ -110,9 +108,6 @@ std::string printFullGBPList()
  * ##findNum
  *
  * Returns the user + GBP at the given position.
- *
- * Arguments:
- * * int pos - The position to find.
  */
 std::string findNum(int pos)
 {
@@ -125,9 +120,6 @@ std::string findNum(int pos)
  * ##findName
  *
  * Finds the given user, and returns a string with their GBP.
- *
- * Arguments:
- * * std::string user - The username to search for.
  */
 std::string findName(std::string user)
 {
@@ -145,6 +137,11 @@ std::string findName(std::string user)
 	return out;
 }
 
+/**
+ * ##fetchGBP
+ *
+ * Fetches the latest GBP
+ */
 std::string fetchGBP()
 {
 	fetchLatestGBP();
@@ -155,9 +152,6 @@ std::string fetchGBP()
  * ##findGBP
  *
  * Returns a string containing every user with the given gbp.
- *
- * Arguments:
- * * int gbpinp - The GBP to find.
  */
 std::string findGBP(int gbpinp)
 {
@@ -223,8 +217,9 @@ std::string copypasta(std::string msg, std::string username)
 		out = "I used the shotgun. You know why? Cause the shot gun doesn't miss: and unlike the shitty hybrid taser it stops a criminal in their tracks in two hits. Bang: bang: and they're fucking done. I use four shots just to make damn sure. Because: once again: I'm not there to coddle a bunca criminal scum sucking f------: I'm there to 1) Survive the fucking round. 2) Guard the armory. So you can absolutely get fucked. If I get unbanned: which I won't: you can guarantee I will continue to use the shotgun to apprehend criminals. Because it's quick: clean and effective as fuck. Why in the seven hells would I fuck around with the disabler shots: which take half a clip just to bring someone down: or with the tazer bolts which are slow as balls: impossible to aim and do about next to jack shit: fuck all. The shotgun is the superior law enforcement weapon. Because it stops crime. And it stops crime by reducing the number of criminals roaming the fucking halls.";
 	} else if (msg == "meow") {
 		out = "Wowwwww, you meow like a cat! That means you are one, right? Shut the fuck up. If you really want to be put on a leash and treated like a domestic animal then that's called a fetish, not \"quirky\" or \"cute\". What part of you seriously thinks that any part of acting like a felin establishes a reputation of appreciation? Is it your lack of any defining aspect of personality that urges you to restort to shitty representations of cats to create an illusion of meaning in your worthless life? Wearing \"car ears\" in the shape of headbands further notes the complete absence of human attribution to your false sense of personality, such as intelligence or charisma in any form or shape. Where do you think this mindset's gonna lead you? You think you're funny, random, quirky even? What makes you think that acting like a fucking cat will make a goddamn hyena laugh? I, personally, feel extremely sympathetic towards you as your only escape from the worthless thing you call your existence is to pretend to be an animal. But it's not a worthy choice to assert this horrifying fact as a dominant trait, mainly because personality traits require an initial personality to lay their foundation on. You're not worthy of anybody's time, so go fuck off, \"cat-girl\".";
+	} else if (msg == "cobb") {
+		out = "SNIFF SNIFF is that feet I smell? Said Ryan Cobb, as his boner swelled. \"Feet, feet, feet with sweat!\" He chanted loud, like a threat. Fast and nimble, quiet as night, Ryan cobb did say with delight: \"YES I SEE THEM, TASTY FEET, SWEATY LARGE AND READY TO EAT!\" He sucked the toes and slurped them down as with horror did watch the clown! He slobbered, swallowed, and sucked with grace as did horror befall our face! The Stun baton swang fast and fleet, so did signal ryan's defeat! But if you see him in the halls, bald head shining off the walls, keep your shoes on, laces knit, lest ryan catch you, and your forced to submit.";
 	}
-
 
 	return out;
 }
