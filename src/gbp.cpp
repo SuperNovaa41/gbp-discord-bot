@@ -28,7 +28,7 @@ std::map<unsigned short int, std::pair<int, std::string>>readGBPIntoList()
 {
 	std::map<unsigned short int, std::pair<int, std::string>> GBP;
 	std::ifstream file;
-	file.open("../src/balances.txt");
+	file.open("balances.txt");
 	std::string line;
 	int i = 1;
 	while(getline(file, line)) {
