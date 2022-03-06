@@ -1,6 +1,5 @@
 #include "gbp.cpp"
 #include <string>
-#include <unordered_map>
 #include <vector>
 #include <algorithm>
 #include <time.h>
@@ -231,28 +230,4 @@ void initCommands()
 	vecArgs.emplace("findgbp", &findGBP);
 	vecArgs.emplace("findname", &findName);
 	vecArgs.emplace("copypasta", &copypasta);
-}
-
-
-////finish this, make it return a string
-//use THIS to ping the users, and call it from a separate thread
-void pingUsers()
-{
-	std::ifstream file;
-	file.open("toPing.txt");
-	if (!file) {
-		file.close();
-		return;
-	}
-	
-	std::string line;
-	std::string username;
-	int gbpPos;
-	std::string toPing;
-	while(getline(file, line)) {
-		username = line.substr(0, line.find(" "));
-		gbpPos = std::stoi(line.substr(line.find(" ") + 1, line.length() - (line.find(" ") + 1)));
-		toPing = line.substr(line.rfind(" "), line.length() - line.rfind(" "));
-	}
-	
 }
