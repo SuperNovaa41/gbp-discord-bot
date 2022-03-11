@@ -22,10 +22,12 @@ std::map<std::string, vecFunc>vecArgs;
  */
 std::string commandParse(std::vector<std::string> args)
 {
-	auto i1 = noArgs.find(args[0]);
+	std::string cmd = args[0];
+	args.erase(args.begin());
+	auto i1 = noArgs.find(cmd);
 	if (i1 != noArgs.end())
 		return (*i1->second)();
-	auto i2 = vecArgs.find(args[0]);
+	auto i2 = vecArgs.find(cmd);
 	if (i2 != vecArgs.end())
 		return (*i2->second)(args);
 	return "Invalid command!";
@@ -134,6 +136,24 @@ std::string findNum(std::vector<std::string> args)
 	std::string out = "```#" + (std::to_string(pos)) + ": " + gbp[pos].second + " (" + std::to_string(gbp[pos].first) + " GBP)```\n"; 
 	return out;
 }
+
+
+/*
+std::string notify(std::vector<std::string> args)
+{
+	if (args.size() < 3)
+		return "Invalid command!";
+
+	// !gbp notify SuperNovaa41
+	// will be the users in put
+	// we need to append
+	// !gbp notify SuperNovaa41 message_sender_id 
+
+	// notify [github name]
+	// notify stop -> this will search for all notifys with that discord name
+}
+*/
+
 
 /**
  * ##findName

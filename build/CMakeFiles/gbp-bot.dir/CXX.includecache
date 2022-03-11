@@ -1121,8 +1121,6 @@ gbp.cpp
 /home/seth/documents/programming/discord-bots/gbp/src/gbp.cpp
 string
 -
-unordered_map
--
 vector
 -
 algorithm
@@ -1148,6 +1146,8 @@ dpp/appcommand.h
 dpp/dispatcher.h
 -
 dpp/dpp.h
+-
+dpp/guild.h
 -
 dpp/intents.h
 -

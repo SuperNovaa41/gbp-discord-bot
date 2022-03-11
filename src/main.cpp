@@ -2,6 +2,7 @@
 #include <dpp/appcommand.h>
 #include <dpp/dispatcher.h>
 #include <dpp/dpp.h>
+#include <dpp/guild.h>
 #include <dpp/intents.h>
 #include <dpp/message.h>
 #include <dpp/once.h>
@@ -70,19 +71,24 @@ void onMessage(dpp::cluster &bot, dpp::message msg)
 
 	/* Parse the command */
 	std::vector<std::string> args = separateArgs(argument);
+	
+
+	args.insert(++args.begin(), std::to_string(msg.author.id));
 	std::string msgContent = commandParse(args);
 
 	/* Here we check if we should embed a file, or just send a message */
 	std::vector<std::string> messageArgs = separateArgs(msgContent);
-	dpp::message toSend;
 	if (messageArgs[0] == std::string(FILE_WARNING)) {
-		toSend = dpp::message(msg.channel_id, "");
-		toSend.add_file(messageArgs[2],  dpp::utility::read_file(messageArgs[1]));
-	} else 
-		toSend = dpp::message(msg.channel_id, msgContent);
-	
-	/* Send the message */
-	bot.message_create(toSend);
+		std::cout << "test2";
+		bot.message_create(dpp::message(msg.channel_id, "")
+				.add_file(messageArgs[2],  dpp::utility::read_file(messageArgs[1]))
+				);
+	} else {
+		std::cout << "test";
+		bot.message_create(dpp::message(msg.channel_id, msgContent)
+				.set_allowed_mentions(true, false, false, false, { }, { })
+				);
+	}
 }
 
 int main()
