@@ -1,53 +1,82 @@
+#include <curl/curl.h>
+#include <curl/easy.h>
+#include <iostream>
+#include <vector>
 #include <string>
 #include <fstream>
-#include <bits/stdc++.h>
-#include <Python.h>
+#include <map>
+#include <algorithm>
 
-/**
- * ##fetchLatestGBP
- *
- * Uses the python script located in /src/ to fetch the latest GBP and write it to a file
- */
-void fetchLatestGBP()
+#define URL "https://raw.githubusercontent.com/tgstation/tgstation/gbp-balances/.github/gbp-balances.toml"
+#define FILE_NAME "gbp" 
+
+void fetch_raw_gbp()
 {
-	FILE* fp;
+	CURL *curl;
+	curl = curl_easy_init();
+	if (curl) {
+		curl_easy_setopt(curl, CURLOPT_URL, URL);
 
-	Py_Initialize();
-	fp = _Py_fopen("../src/gbp-leaderboard.py", "r");
-	PyRun_SimpleFile(fp, "../src/gbp-leaderboard.py");
-	Py_Finalize();
-}
+		FILE* GBP = fopen(FILE_NAME, "w");
+		curl_easy_setopt(curl, CURLOPT_WRITEDATA, GBP); 
 
-/**
- * ##readGBPIntoList
- *
- * Returns a map of containing the contents of the GBP file.
- * Formatted as <position (unsigned short int), <gbp amount (int), username (std::string)>>
- */
-std::map<unsigned short int, std::pair<int, std::string>>readGBPIntoList()
-{
-	std::map<unsigned short int, std::pair<int, std::string>> GBP;
-	std::ifstream file;
-	file.open("balances.txt");
-	std::string line;
-	int i = 1;
-	while(getline(file, line)) {
-		std::string username = line.substr(line.find(" "), line.rfind(" ") - line.find(" "));
-		int tGBP = std::stoi(line.substr(line.rfind(" "), line.length() - line.rfind(" ")));
-
-		GBP.insert({i, {tGBP, username}});
-		i++;
+		curl_easy_perform(curl);
+		curl_easy_cleanup(curl);
+		fclose(GBP);
 	}
-	file.close();
-
-	return GBP;
 }
 
-/**
- * fetches latest GBP, and then reads it into a map
- */
-std::map<unsigned short int, std::pair<int, std::string>>fetchAndReadGBP()
+std::vector<std::string> parse_raw_gbp()
 {
-	fetchLatestGBP();
-	return readGBPIntoList();
+		
+	std::ifstream file;
+	file.open(FILE_NAME);
+	
+	if (!file) { // if the file doesnt exist, lets force it
+		fetch_raw_gbp();
+		file.open(FILE_NAME);
+	}
+	
+	std::vector<std::string> out;
+	std::string line;
+	while (getline(file, line)) {
+		if (line[0] >= '0' && line[0] <= '9')
+			out.push_back(line);
+	}
+
+	return out;
 }
+
+std::vector<std::pair<int, std::string>> fetch_gbp_info()
+{
+	std::vector<std::string> in = parse_raw_gbp();	
+	std::vector<std::pair<int, std::string>> out;
+	for (std::vector<std::string>::iterator it = in.begin(); it != in.end(); it++) {
+		std::string line = (*it);
+		std::string username = line.substr(line.find("#") + 2, line.length() - (line.find("#") + 1));
+		int gbp = std::stoi(line.substr(line.find("=") + 2, line.find("#") - 1 -  line.find("#")));
+		
+		std::pair<int, std::string> info = {gbp, username};
+		out.push_back(info);
+	}
+	return out;
+}
+
+std::map<int, std::pair<int, std::string>> fetch_formatted_gbp()
+{
+	std::vector<std::pair<int, std::string>> in = fetch_gbp_info();
+	std::sort(in.begin(), in.end(),
+			[](std::pair<int, std::string> a, std::pair<int, std::string> b) { // lambda expression to reverse the compare method
+				return (a.first > b.first);
+			}	
+		);
+
+	std::map<int, std::pair<int, std::string>> out;
+	for (int i = 1; i <= in.size(); i++)
+		out[i] = in[i-1];
+
+
+	return out;
+}
+#undef URL
+#undef FILE_NAME
