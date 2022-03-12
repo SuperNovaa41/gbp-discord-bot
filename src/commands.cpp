@@ -18,8 +18,7 @@ void init_commands(dpp::commandhandler &command_handler)
 			std::string response = find_username(username);
 			command_handler.reply(dpp::message(response), src);
 		},
-		"Finds the github username, and their associated GBP value.",
-		865347537287249980
+		"Finds the github username, and their associated GBP value."
 	);
 
 
@@ -36,8 +35,7 @@ void init_commands(dpp::commandhandler &command_handler)
 			std::string response = find_gbp(gbp);
 			command_handler.reply(dpp::message(response), src);
 		},
-		"Finds the users with the amount of GBP provided.",
-		865347537287249980
+		"Finds the users with the amount of GBP provided."
 	);
 
 	std::cout << "Command added!\n";
@@ -49,12 +47,11 @@ void init_commands(dpp::commandhandler &command_handler)
 		[&command_handler](const std::string &command, const dpp::parameter_list_t &parameters, dpp::command_source src) {
 			int pos;
 			if (!parameters.empty())
-				pos= std::stoi(std::get<std::string>(parameters[0].second));
+				pos = std::stoi(std::get<std::string>(parameters[0].second));
 			std::string response = find_gbp_pos(pos);
 			command_handler.reply(dpp::message(response), src);
 		},
-		"Finds the users with the amount of GBP provided.",
-		865347537287249980
+		"Finds the users with the amount of GBP provided."
 	);
 
 	std::cout << "Command added!\n";
@@ -67,8 +64,7 @@ void init_commands(dpp::commandhandler &command_handler)
 			fetch_raw_gbp();
 			command_handler.reply(dpp::message("Fetched latest GBP!"), src);
 		},
-		"Fetches the latest GBP.",
-		865347537287249980
+		"Fetches the latest GBP."
 	);
 
 	std::cout << "Command added!\n";
