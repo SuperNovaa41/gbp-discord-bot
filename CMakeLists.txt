@@ -3,8 +3,6 @@ cmake_minimum_required(VERSION 3.15)
 # Project name, version and description
 project(gbp-bot VERSION 1.0 DESCRIPTION "A discord bot")
 
-find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
-
 # Add DPP as dependency
 add_subdirectory(libs/DPP)
  
@@ -17,7 +15,7 @@ add_executable(${PROJECT_NAME}
 # Linking libraries
 target_link_libraries(${PROJECT_NAME} 
     dpp
-    Python3::Python
+    curl
 )
  
 # Specify includes

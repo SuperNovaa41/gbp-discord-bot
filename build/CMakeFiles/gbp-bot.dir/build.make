@@ -99,7 +99,6 @@ gbp__bot_EXTERNAL_OBJECTS =
 gbp-bot: CMakeFiles/gbp-bot.dir/src/main.cpp.o
 gbp-bot: CMakeFiles/gbp-bot.dir/build.make
 gbp-bot: libs/DPP/libdpp.so.1.0
-gbp-bot: /usr/lib/x86_64-linux-gnu/libpython3.9.so
 gbp-bot: /usr/lib/x86_64-linux-gnu/libcrypto.so
 gbp-bot: /usr/lib/x86_64-linux-gnu/libssl.so
 gbp-bot: /usr/lib/x86_64-linux-gnu/libz.so
