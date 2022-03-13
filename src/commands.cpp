@@ -4,7 +4,9 @@
 #include <dpp/message.h>
 #include <iostream>
 #include <fstream>
+#include <dpp/nlohmann/json.hpp>
 
+using json = nlohmann::json;
 
 #define TEMP_FILE_NAME "gbp.txt"
 void sanitize_message(std::string &content, dpp::message &msg)
@@ -21,6 +23,23 @@ void sanitize_message(std::string &content, dpp::message &msg)
 	msg.add_file(TEMP_FILE_NAME, dpp::utility::read_file(TEMP_FILE_NAME));
 }
 #undef TEMP_FILE_NAME
+
+std::string get_copypasta(std::string msg, std::string in = "")
+{
+	json copypasta;
+	std::ifstream copypasta_file("../copypasta.json");
+	copypasta_file >> copypasta;
+
+	if (copypasta.find(msg) == copypasta.end())
+		return "";
+	std::string out = copypasta[msg];
+	
+	int i;
+	while ((i = out.find("%s")) != -1) {
+		out.replace(i, 2, in);
+	}
+	return out;
+}
 
 void init_commands(dpp::commandhandler &command_handler)
 {
@@ -41,9 +60,6 @@ void init_commands(dpp::commandhandler &command_handler)
 		},
 		"Finds the github username, and their associated GBP value."
 	);
-
-
-	std::cout << "Command added 1!\n";
 	command_handler.add_command(
 		"findgbp",
 		{
@@ -61,8 +77,6 @@ void init_commands(dpp::commandhandler &command_handler)
 		},
 		"Finds the users with the amount of GBP provided."
 	);
-
-	std::cout << "Command added!\n";
 	command_handler.add_command(
 		"findpos",
 		{
@@ -80,8 +94,6 @@ void init_commands(dpp::commandhandler &command_handler)
 		},
 		"Finds the user at the specified spot on the leaderboard."
 	);
-
-	std::cout << "Command added!\n";
 	command_handler.add_command(
 		"fetchgbp",
 		{},
@@ -91,8 +103,26 @@ void init_commands(dpp::commandhandler &command_handler)
 		},
 		"Fetches the latest GBP."
 	);
-
-	std::cout << "Command added!\n";
+	command_handler.add_command(
+		"copypasta",
+		{
+			{"message", dpp::param_info(dpp::pt_string, false, "The copypasta")},
+			{"replace", dpp::param_info(dpp::pt_string, true, "The string to replace add to the copypasta template")}
+		},
+		[&command_handler](const std::string &command, const dpp::parameter_list_t &parameters, dpp::command_source src) {
+			std::string copypasta_message;
+			std::string to_replace;
+			if (!parameters.empty()) {
+				copypasta_message = std::get<std::string>(parameters[0].second);
+				to_replace = std::get<std::string>(parameters[1].second);
+			}
+			std::string response = get_copypasta(copypasta_message, to_replace);
+			dpp::message msg;
+			sanitize_message(response, msg);
+			msg.set_content(response);
+			command_handler.reply(msg, src);
+		}
+	);
 }
 
 
